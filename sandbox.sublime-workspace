@@ -1,0 +1,206 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"comp",
+				"component	(local, instance)"
+			],
+			[
+				"act",
+				"activeConnections"
+			],
+			[
+				"l",
+				"lastAck	(attribute, instance)"
+			],
+			[
+				"getC",
+				"getConnection"
+			],
+			[
+				"my",
+				"myPyDatagram	(local, instance)"
+			],
+			[
+				"send",
+				"sendLogin	(attribute, function)"
+			],
+			[
+				"L",
+				"LOGIN_ACCEPT  (variable)"
+			],
+			[
+				"packe",
+				"packetCount	(attribute, instance)"
+			],
+			[
+				"user",
+				"userName	(local, instance)"
+			],
+			[
+				"add",
+				"addComponent"
+			],
+			[
+				"Acc",
+				"AccountComponent	(global, class)"
+			],
+			[
+				"cre",
+				"createEntity"
+			],
+			[
+				"Solar",
+				"SolarSystemSystem"
+			],
+			[
+				"solar",
+				"solarSystemRoot	(local, instance)"
+			],
+			[
+				"sola",
+				"solarDB	(global, instance)"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/User/ITF Server Client.sublime-build",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 153.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/croxis/src/ITF/ITF.sublime-project",
+		"/home/croxis/src/SandBox/__init__.py",
+		"/home/croxis/src/ITF/solarsystem.yaml",
+		"/home/croxis/.config/sublime-text-2/Packages/User/ITF Server Client.sublime-build",
+		"/home/croxis/.config/sublime-text-2/Packages/SublimeCodeIntel/Base File.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/User/Python.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/User/SideBarGit.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/SideBarGit/SideBarGit.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"*.py"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"SandBox",
+			"NodePath"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"sandbox"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
