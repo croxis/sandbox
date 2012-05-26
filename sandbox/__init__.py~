@@ -17,7 +17,7 @@ base = ShowBase()
 #TODO: Add persistance mechanisms
 #components = {} #{__Class__: []}
 entities = []
-components = [] #components[entityid]{componentType: component}
+components = []
 removedAndAvailableEntities = []
 systems = {}
 
@@ -33,8 +33,7 @@ def addComponent(entity, component):
     messenger.send("addComponent", [entity, component])
 
 
-def createEntity():
-    """Returns next available entity"""
+def createEntity(tag=None):
     entity = None
     if removedAndAvailableEntities:
         log.debug("Entity Request: Using existing entity")
@@ -46,7 +45,6 @@ def createEntity():
         components.append({})
     log.debug("Number of entities: " + str(len(entities)))
     return entity
-
 
 
 def removeEntity(entityId):
@@ -125,14 +123,13 @@ class EntitySystem(DirectObject):
             self.end()
 
     def init(self):
-        """This function is overridden for initialization instead of __init__."""
 
+        """This function is overridden for initialization instead of __init__."""
     def begin(self):
         pass
 
     def process(self, entity):
         """This is overridden"""
-        log.error(str(self) + " has no process function.")
         raise NotImplementedError
 
     def end(self):

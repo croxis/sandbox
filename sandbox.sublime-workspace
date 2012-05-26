@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"system",
+				"systemType	(local, instance)"
+			],
+			[
 				"comp",
 				"component	(local, instance)"
 			],
@@ -67,15 +71,31 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "sandbox/__init__.py",
+			"settings":
+			{
+				"buffer_size": 4618,
+				"line_ending": "Unix"
+			}
+		}
 	],
-	"build_system": "Packages/User/ITF Server Client.sublime-build",
+	"build_system": "Packages/User/SandBox.sublime-build",
 	"command_palette":
 	{
-		"height": 0.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"",
+				"About"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
 		],
-		"width": 0.0
+		"width": 602.0
 	},
 	"console":
 	{
@@ -92,6 +112,10 @@
 	},
 	"file_history":
 	[
+		"/usr/local/lib/python2.7/dist-packages/sandbox/__init__.py",
+		"/home/croxis/.config/sublime-text-2/Packages/User/SublimeLinter.sublime-settings",
+		"/home/croxis/.config/sublime-text-2/Packages/User/SandBox.sublime-build",
+		"/home/croxis/.config/sublime-text-2/Packages/Pylinter/Pylinter.sublime-settings",
 		"/home/croxis/src/ITF/ITF.sublime-project",
 		"/home/croxis/src/SandBox/__init__.py",
 		"/home/croxis/src/ITF/solarsystem.yaml",
@@ -140,8 +164,119 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "sandbox/__init__.py",
+					"settings":
+					{
+						"buffer_size": 4618,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1549,
+								1549
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"text-indent": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 852.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -176,6 +311,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 220.0
+	},
 	"replace":
 	{
 		"height": 64.0
@@ -194,6 +333,18 @@
 		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"I",
+				"/home/croxis/src/ITF/ITF.sublime-project"
+			],
+			[
+				"",
+				"/home/croxis/src/ITF/ITF.sublime-project"
+			],
+			[
+				"ITF",
+				"/home/croxis/src/ITF/ITF.sublime-project"
+			]
 		],
 		"width": 380.0
 	},
