@@ -16,10 +16,33 @@ base = ShowBase()
 #TODO: Add locking mechanisms
 #TODO: Add persistance mechanisms
 #components = {} #{__Class__: []}
-entities = []
-components = [] #components[entityid]{componentType: component}
-removedAndAvailableEntities = []
+#entities = []
+#components = [] #components[entityid]{componentType: component}
+#removedAndAvailableEntities = []
+entityCounter = 0
+entities = {}
+components = {}
 systems = {}
+counterReset = False
+maxEntities = 65534
+
+def getNextID():
+    entityCounter += 1
+    if entityCounter > maxEntities:
+        entityCounter = 0
+        counterReset = True
+    if not counterReset:
+        return entityCounter
+    else:
+        if entityCounter not in entities.keys():
+            return entityCounter
+        else:
+            for x in range(0, maxEntities):
+                if x not in entities.keys():
+                    return x
+            log.error("SandBox has reached the max number of entities. Increase entity limit.")
+
+
 
 #def addComponent(component):
 #    if component.__class__ not in components.keys():
@@ -36,7 +59,7 @@ def addComponent(entity, component):
 def createEntity():
     """Returns next available entity"""
     entity = None
-    if removedAndAvailableEntities:
+    """if removedAndAvailableEntities:
         log.debug("Entity Request: Using existing entity")
         entity = entities.pop()
     else:
@@ -44,15 +67,32 @@ def createEntity():
         entity = Entity(len(entities))
         entities.append(entity)
         components.append({})
+    log.debug("Number of entities: " + str(len(entities)))"""
+    log.debug("Entity Request: Creating new entity")
+    entity = Entity(getNextID())
+    entities[entity.id] = entity
+    components[entity.id] = {}
     log.debug("Number of entities: " + str(len(entities)))
     return entity
 
 
+def addEntity(entityId):
+    """Manually adds an entity with a given id. Ideal for clients."""
+    if entityId in entities.keys():
+        log.warning("Entity " + str(entityId) + " already exists!")
+        return
+    entity = Entity(entityId)
+    entities[entity.id] = entity
+    components[entity.id] = {}
+    return entity
+
 
 def removeEntity(entityId):
-    entities[entityId].reset()
-    components[entityId] = {}
-    removedAndAvailableEntities.append(entities[entityId])
+    #entities[entityId].reset()
+    #components[entityId] = {}
+    #removedAndAvailableEntities.append(entities[entityId])
+    del entities[entityId]
+    del components[entityId]
 
 
 def addSystem(system):
@@ -69,7 +109,7 @@ def getComponent(entity, componentType=None):
 
 def getComponents(componentType):
     c = []
-    for componentDict in components:
+    for componentDict in components.values():
         if componentType in componentDict:
             c.append(componentDict[componentType])
     return c
@@ -83,7 +123,8 @@ class Entity(object):
     #    self.components[component.__class__] = component
 
     def removeComponent(self, componentClass):
-        del self.components[componentClass]
+        #del self.components[componentClass]
+        pass
 
     def reset(self):
         #self.typeBits = self.systemBits = 0

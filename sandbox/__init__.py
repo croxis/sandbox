@@ -76,6 +76,17 @@ def createEntity():
     return entity
 
 
+def addEntity(entityId):
+    """Manually adds an entity with a given id. Ideal for clients."""
+    if entityId in entities.keys():
+        log.warning("Entity " + str(entityId) + " already exists!")
+        return
+    entity = Entity(entityId)
+    entities[entity.id] = entity
+    components[entity.id] = {}
+    return entity
+
+
 def removeEntity(entityId):
     #entities[entityId].reset()
     #components[entityId] = {}

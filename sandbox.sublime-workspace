@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"entity",
+				"entityCounter	(global, instance)"
+			],
+			[
+				"max",
+				"maxEntities	(global, instance)"
+			],
+			[
 				"system",
 				"systemType	(local, instance)"
 			],
@@ -75,7 +83,7 @@
 			"file": "sandbox/__init__.py",
 			"settings":
 			{
-				"buffer_size": 4618,
+				"buffer_size": 5513,
 				"line_ending": "Unix"
 			}
 		}
@@ -172,15 +180,15 @@
 					"file": "sandbox/__init__.py",
 					"settings":
 					{
-						"buffer_size": 4618,
+						"buffer_size": 5513,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1549,
-								1549
+								4142,
+								4142
 							]
 						],
 						"settings":
@@ -272,7 +280,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 852.0,
+						"translation.y": 3601.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -311,10 +319,6 @@
 		]
 	},
 	"menu_visible": true,
-	"output.exec":
-	{
-		"height": 220.0
-	},
 	"replace":
 	{
 		"height": 64.0
