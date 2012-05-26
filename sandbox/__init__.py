@@ -98,7 +98,7 @@ def getComponent(entity, componentType=None):
 
 def getComponents(componentType):
     c = []
-    for componentDict in components:
+    for componentDict in components.values():
         if componentType in componentDict:
             c.append(componentDict[componentType])
     return c
@@ -112,7 +112,8 @@ class Entity(object):
     #    self.components[component.__class__] = component
 
     def removeComponent(self, componentClass):
-        del self.components[componentClass]
+        #del self.components[componentClass]
+        pass
 
     def reset(self):
         #self.typeBits = self.systemBits = 0
