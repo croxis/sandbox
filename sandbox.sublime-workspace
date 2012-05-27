@@ -83,7 +83,7 @@
 			"file": "sandbox/__init__.py",
 			"settings":
 			{
-				"buffer_size": 5513,
+				"buffer_size": 5841,
 				"line_ending": "Unix"
 			}
 		}
@@ -180,15 +180,15 @@
 					"file": "sandbox/__init__.py",
 					"settings":
 					{
-						"buffer_size": 5513,
+						"buffer_size": 5841,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4142,
-								4142
+								2629,
+								2629
 							]
 						],
 						"settings":
@@ -280,7 +280,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3601.0,
+						"translation.y": 1072.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -337,6 +337,10 @@
 		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"IT",
+				"/home/croxis/src/ITF/ITF.sublime-project"
+			],
 			[
 				"I",
 				"/home/croxis/src/ITF/ITF.sublime-project"
