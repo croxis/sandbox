@@ -27,6 +27,7 @@ counterReset = False
 maxEntities = 65534
 
 def getNextID():
+    global entityCounter
     entityCounter += 1
     if entityCounter > maxEntities:
         entityCounter = 0
@@ -104,7 +105,8 @@ def getSystem(systemType):
 
 
 def getComponent(entity, componentType=None):
-    return components[entity.id][componentType]
+    if hasComponent(entity, componentType):
+        return components[entity.id][componentType]
 
 
 def getComponents(componentType):
@@ -113,6 +115,9 @@ def getComponents(componentType):
         if componentType in componentDict:
             c.append(componentDict[componentType])
     return c
+
+def hasComponent(entity, componentType):
+    return componentType in components[entity.id]
 
 
 class Entity(object):
