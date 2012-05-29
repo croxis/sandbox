@@ -137,6 +137,9 @@ class Entity(object):
     def getComponent(self, componentType):
         return getComponent(self, componentType)
 
+    def hasComponent(self, componentType):
+        return hasComponent(self, componentType)
+
 
 class Component(object):
     pass
