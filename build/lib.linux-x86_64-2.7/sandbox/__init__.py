@@ -28,6 +28,7 @@ maxEntities = 65534
 
 def getNextID():
     global entityCounter
+    global counterReset
     entityCounter += 1
     if entityCounter > maxEntities:
         entityCounter = 0

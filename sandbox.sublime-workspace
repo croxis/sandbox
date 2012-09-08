@@ -79,17 +79,6 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "\"\"\"SandBox engine! Much love to Maxis\"\"\"\nfrom pandac.PandaModules import loadPrcFileData\nloadPrcFileData(\"\", \"notify-level-SandBox debug\")\n\nfrom direct.directnotify.DirectNotify import DirectNotify\nfrom direct.showbase.DirectObject import DirectObject\nfrom direct.showbase.ShowBase import ShowBase\n\nfrom main import *\n\n#from types import ClassType, TypeType\n\nlog = DirectNotify().newCategory(\"SandBox\")\nbase = ShowBase()\n\n#TODO: Add locking mechanisms\n#TODO: Add persistance mechanisms\n#components = {} #{__Class__: []}\n#entities = []\n#components = [] #components[entityid]{componentType: component}\n#removedAndAvailableEntities = []\nentityCounter = 0\nentities = {}\ncomponents = {}\nsystems = {}\ncounterReset = False\nmaxEntities = 65534\n\ndef getNextID():\n    entityCounter += 1\n    if entityCounter > maxEntities:\n        entityCounter = 0\n        counterReset = True\n    if not counterReset:\n        return entityCounter\n    else:\n        if entityCounter not in entities.keys():\n            return entityCounter\n        else:\n            for x in range(0, maxEntities):\n                if x not in entities.keys():\n                    return x\n            log.error(\"SandBox has reached the max number of entities. Increase entity limit.\")\n\n\n\n#def addComponent(component):\n#    if component.__class__ not in components.keys():\n#        components[component.__class__] = []\n#    components[component.__class__].append(component)\n\n\ndef addComponent(entity, component):\n    components[entity.id][component.__class__] = component\n    log.debug(\"Added component: \" + str(component))\n    messenger.send(\"addComponent\", [entity, component])\n\n\ndef createEntity():\n    \"\"\"Returns next available entity\"\"\"\n    entity = None\n    \"\"\"if removedAndAvailableEntities:\n        log.debug(\"Entity Request: Using existing entity\")\n        entity = entities.pop()\n    else:\n        log.debug(\"Entity Request: Creating new entity\")\n        entity = Entity(len(entities))\n        entities.append(entity)\n        components.append({})\n    log.debug(\"Number of entities: \" + str(len(entities)))\"\"\"\n    log.debug(\"Entity Request: Creating new entity\")\n    entity = Entity(getNextID())\n    entities[entity.id] = entity\n    components[entity.id] = {}\n    log.debug(\"Number of entities: \" + str(len(entities)))\n    return entity\n\n\ndef addEntity(entityId):\n    \"\"\"Manually adds an entity with a given id. Ideal for clients.\"\"\"\n    if entityId in entities.keys():\n        log.warning(\"Entity \" + str(entityId) + \" already exists!\")\n        return\n    entity = Entity(entityId)\n    entities[entity.id] = entity\n    components[entity.id] = {}\n    return entity\n\n\ndef removeEntity(entityId):\n    #entities[entityId].reset()\n    #components[entityId] = {}\n    #removedAndAvailableEntities.append(entities[entityId])\n    del entities[entityId]\n    del components[entityId]\n\n\ndef addSystem(system):\n    systemManager.addSystem(system)\n\n\ndef getSystem(systemType):\n    return systemManager.getSystem(systemType)\n\n\ndef getComponent(entity, componentType=None):\n    if hasComponent(entity, componentType):\n        return components[entity.id][componentType]\n\n\ndef getComponents(componentType):\n    c = []\n    for componentDict in components.values():\n        if componentType in componentDict:\n            c.append(componentDict[componentType])\n    return c\n\ndef hasComponent(entity, componentType):\n    return componentType in components[entity.id]\n\n\nclass Entity(object):\n    def __init__(self, uniqueId):\n        self.id = uniqueId\n    #    self.components = {}\n    #def addComponent(self,component):\n    #    self.components[component.__class__] = component\n\n    def removeComponent(self, componentClass):\n        #del self.components[componentClass]\n        pass\n\n    def reset(self):\n        #self.typeBits = self.systemBits = 0\n        pass\n\n    def addComponent(self, component):\n        #if not isinstance(component, Component): raise TypeError\n        addComponent(self, component)\n\n    def getComponent(self, componentType):\n        return getComponent(self, componentType)\n\n    def hasComponent(self, componentType):\n        return hasComponent(self, componentType)\n\n\nclass Component(object):\n    pass\n\n\nclass EntitySystem(DirectObject):\n    def __init__(self, *types):\n        self.entities = {}\n        self.interested = set()\n        self.enabled = True\n        for t in types:\n            log.debug(str(self) + \" interested in \" + str(t))\n            self.interested.add(t)\n        self.accept(\"addComponent\", self.addComponent)\n\n    def addComponent(self, entity, component):\n        if component.__class__ in self.interested and entity not in self.entities:\n            log.debug(\"Adding component \" + str(component) + \" to entity \" + str(entity))\n            self.entities[entity.id] = entity\n\n    def run(self):\n        if self.enabled:\n            self.begin()\n            #self.processEntities(self.entities)\n            for e in self.entities.values():\n                self.process(e)\n            self.end()\n\n    def init(self):\n        \"\"\"This function is overridden for initialization instead of __init__.\"\"\"\n\n    def begin(self):\n        pass\n\n    def process(self, entity):\n        \"\"\"This is overridden\"\"\"\n        log.error(str(self) + \" has no process function.\")\n        raise NotImplementedError\n\n    def end(self):\n        pass\n\n\nclass SystemManager(object):\n    def __init__(self):\n        taskMgr.add(self.update, \"systemManager\")\n\n    def addSystem(self, system):\n        if not isinstance(system, EntitySystem):\n            raise TypeError\n        log.debug(\"Adding system \" + str(system))\n        system.init()\n        systems[system.__class__] = system\n\n    def getSystem(self, systemType):\n        #if not isinstance(systemType, EntitySystem):\n        #    raise TypeError\n        return systems[systemType]\n\n    def update(self, task):\n        #TODO: We may need to pass time delta values\n        for system in systems.values():\n            system.run()\n        return task.cont\n\nsystemManager = SystemManager()\n\n\ndef run():\n    log.info(\"Starting server\")\n    base.run()\n",
-			"file": "sandbox/__init__.py",
-			"file_size": 5934,
-			"file_write_time": 1338257932000000,
-			"settings":
-			{
-				"buffer_size": 6074,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/User/SandBox.sublime-build",
 	"command_palette":
@@ -123,6 +112,10 @@
 	},
 	"file_history":
 	[
+		"/home/croxis/src/SandBox/sandbox/__init__.py",
+		"/home/croxis/src/Civilmineationold/src/main/java/net/croxis/minecraft/civilmineation/Civilmineation.java",
+		"/home/croxis/src/Civilmineationold/src/main/java/net/croxis/minecraft/civilmineation/object/TownyUniverse.java",
+		"/home/croxis/src/Civilmineationold/src/main/java/net/croxis/minecraft/civilmineation/object/City.java",
 		"/usr/local/lib/python2.7/dist-packages/sandbox/__init__.py",
 		"/home/croxis/.config/sublime-text-2/Packages/User/SublimeLinter.sublime-settings",
 		"/home/croxis/.config/sublime-text-2/Packages/User/SandBox.sublime-build",
@@ -175,119 +168,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "sandbox/__init__.py",
-					"settings":
-					{
-						"buffer_size": 6074,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3121,
-								3121
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"text-indent": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"Python Django": "python"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1780.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -341,15 +223,15 @@
 		"selected_items":
 		[
 			[
+				"",
+				"/home/croxis/src/ITF/ITF.sublime-project"
+			],
+			[
 				"IT",
 				"/home/croxis/src/ITF/ITF.sublime-project"
 			],
 			[
 				"I",
-				"/home/croxis/src/ITF/ITF.sublime-project"
-			],
-			[
-				"",
 				"/home/croxis/src/ITF/ITF.sublime-project"
 			],
 			[

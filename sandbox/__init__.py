@@ -7,6 +7,7 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.ShowBase import ShowBase
 
 from main import *
+from errors import *
 
 #from types import ClassType, TypeType
 
@@ -26,8 +27,10 @@ systems = {}
 counterReset = False
 maxEntities = 65534
 
+
 def getNextID():
     global entityCounter
+    global counterReset
     entityCounter += 1
     if entityCounter > maxEntities:
         entityCounter = 0
@@ -107,6 +110,10 @@ def getSystem(systemType):
 def getComponent(entity, componentType=None):
     if hasComponent(entity, componentType):
         return components[entity.id][componentType]
+    else:
+        raise Exception("Oh noes!")
+    #    print "ahh"
+    #    raise NoComponent(components)
 
 
 def getComponents(componentType):
@@ -116,8 +123,13 @@ def getComponents(componentType):
             c.append(componentDict[componentType])
     return c
 
+
 def hasComponent(entity, componentType):
     return componentType in components[entity.id]
+
+
+def send(message, params):
+    base.messenger.send(message, params)
 
 
 class Entity(object):
