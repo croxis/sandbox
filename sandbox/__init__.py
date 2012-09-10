@@ -111,7 +111,8 @@ def getComponent(entity, componentType=None):
     if hasComponent(entity, componentType):
         return components[entity.id][componentType]
     else:
-        raise Exception("Oh noes!")
+        raise errors.NoComponent("No component type " + componentType
+                + " in entity " + self.id)
     #    print "ahh"
     #    raise NoComponent(components)
 
@@ -123,6 +124,15 @@ def getComponents(componentType):
             c.append(componentDict[componentType])
     return c
 
+def getEntitiesByComponentType(componentType):
+    '''Returns a list of entities that have a component. This will be
+    very expensive with large sets until the backend is moved to a
+    real database'''
+    entities = []
+    for entityID in components:
+        if componentType in components[entityID]:
+            entities.append(entities[entityID])
+    return entities
 
 def hasComponent(entity, componentType):
     return componentType in components[entity.id]
