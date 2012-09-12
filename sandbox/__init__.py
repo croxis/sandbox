@@ -212,15 +212,12 @@ class EntitySystem(DirectObject):
         pass
 
 class UDPNetworkSystem(EntitySystem):
-    def init(self, port=0, backlog=1000, compress=False):
-        log.debug("Initiating Network System")
-
-        self.port = port
-        self.backlog = backlog
-        self.compress = compress
+    port = 0
+    def init(self, compress=False):
+        log.debug("Initiating Network System on port " + str(self.port))
 
         self.udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.udpSocket.bind(('', port))
+        self.udpSocket.bind(('', self.port))
         self.udpSocket.setblocking(0)
 
         self.lastAck = {}  # {NetAddress: time}
