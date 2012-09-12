@@ -9,6 +9,8 @@ from direct.showbase.ShowBase import ShowBase
 from main import *
 from errors import *
 
+import socket
+
 #from types import ClassType, TypeType
 
 log = DirectNotify().newCategory("SandBox")
@@ -128,11 +130,11 @@ def getEntitiesByComponentType(componentType):
     '''Returns a list of entities that have a component. This will be
     very expensive with large sets until the backend is moved to a
     real database'''
-    entities = []
+    entitiesList = []
     for entityID in components:
         if componentType in components[entityID]:
-            entities.append(entities[entityID])
-    return entities
+            entitiesList.append(entities[entityID])
+    return entitiesList
 
 def hasComponent(entity, componentType):
     return componentType in components[entity.id]
@@ -208,6 +210,65 @@ class EntitySystem(DirectObject):
 
     def end(self):
         pass
+
+class UDPNetworkSystem(EntitySystem):
+    def init(self, port=0, backlog=1000, compress=False):
+        log.debug("Initiating Network System")
+
+        self.port = port
+        self.backlog = backlog
+        self.compress = compress
+
+        self.udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udpSocket.bind(('', port))
+        self.udpSocket.setblocking(0)
+
+        self.lastAck = {}  # {NetAddress: time}
+
+        self.startPolling()
+        self.init2()
+
+    def init2(self):
+        """This function is overridden for initialization instead of __init__."""
+
+    def startPolling(self):
+        #taskMgr.add(self.tskReaderPolling, "serverListenTask", -40)
+        base.taskMgr.doMethodLater(10, self.activeCheck, "activeCheck")
+
+    def begin(self):
+        try:
+            data, addr = self.udpSocket.recvfrom(1024)
+            print data, addr
+            #msgID, remotePacketCount, ack, acks, hashID, serialized = self.unpackPacket(data)
+            self.processPacket(self.unpackPacket(data))
+        except:
+            return
+
+    def unpackPacket(datagram):
+        try:
+            split = datagram.split(',', 5)
+            return int(split[0]), int(split[1]), int(split[2]), int(split[3]), int(split[4]), split[5]
+        except:
+            raise errors.InvalidPacket(datagram)
+
+    def generateGenericPacket(self, key, packetCount=0):
+        datagram = str(key) + ',' + '0,0,0,0'
+        return datagram
+
+    def processPacket(self, msgID, remotePacketCount, ack, acks, hashID, serialized):
+        """Override to process data"""
+
+    def activeCheck(self, task):
+        """Checks for last ack from all known active connections."""
+        for address, lastTime in self.lastAck.items():
+            if (datetime.datetime.now() - lastTime).seconds > 30:
+                print self.activeConnections
+                component = self.activeConnections[address]
+                #TODO: Disconnect
+        return task.again
+
+    def sendData(self, datagram, address):
+        self.udpSocket.sendto(datagram, address)
 
 
 class SystemManager(object):
