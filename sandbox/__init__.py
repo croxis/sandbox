@@ -143,7 +143,7 @@ def hasComponent(entity, componentType):
     return componentType in components[entity.id]
 
 
-def send(message, params):
+def send(message, params=[]):
     base.messenger.send(message, params)
 
 
