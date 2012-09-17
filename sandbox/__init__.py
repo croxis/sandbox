@@ -274,7 +274,7 @@ class UDPNetworkSystem(EntitySystem):
                 self.activeConnections[address].address = ('', 0)
                 del self.activeConnections[address]
                 del self.lastAck[address]
-                send('playerDisconnected', address)
+                send('playerDisconnected', [address])
                 #TODO: Disconnect
         return task.again
 
