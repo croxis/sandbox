@@ -266,13 +266,15 @@ class UDPNetworkSystem(EntitySystem):
         raise NotImplementedError
 
     def activeCheck(self, task):
-        """Checks for last ack from all known active connections."""
+        """Checks for last ack from all known active connections.
+        playerDisconnected, address message fires if a player disconnects"""
         for address, lastTime in self.lastAck.items():
             if (datetime.datetime.now() - lastTime).seconds > 30:
                 #print self.activeConnections
                 self.activeConnections[address].address = ('', 0)
                 del self.activeConnections[address]
                 del self.lastAck[address]
+                send('playerDisconnected', address)
                 #TODO: Disconnect
         return task.again
 
@@ -288,9 +290,11 @@ def generateGenericPacket(key, packetCount=0):
         datagram = str(key) + ',' + '0,0,0,0,'
         return datagram
 
+
 def generatePacket(key, message, packetCount=0):
         datagram = generateGenericPacket(key, packetCount=0) + message.SerializeToString()
         return datagram
+
 
 class SystemManager(object):
     def __init__(self):
