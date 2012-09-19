@@ -114,8 +114,8 @@ def getComponent(entity, componentType=None):
     if hasComponent(entity, componentType):
         return components[entity.id][componentType]
     else:
-        raise errors.NoComponent("No component type " + componentType
-                + " in entity " + self.id)
+        raise errors.NoComponent("No component type " + str(componentType)
+                + " in entity " + str(self.id))
     #    print "ahh"
     #    raise NoComponent(components)
 
