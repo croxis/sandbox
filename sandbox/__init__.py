@@ -115,9 +115,7 @@ def getComponent(entity, componentType=None):
         return components[entity.id][componentType]
     else:
         raise errors.NoComponent("No component type " + str(componentType)
-                + " in entity " + str(self.id))
-    #    print "ahh"
-    #    raise NoComponent(components)
+                + " in entity " + str(entity.id))
 
 
 def getComponents(componentType):
