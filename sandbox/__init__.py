@@ -38,17 +38,25 @@ def getNextID():
     if entityCounter > maxEntities:
         entityCounter = 0
         counterReset = True
-    if not counterReset:
+    #if not counterReset:
+    #print "Scanning for number", entityCounter, entities
+    if entityCounter not in entities:
         return entityCounter
     else:
-        if entityCounter not in entities.keys():
+        for x in range(0, maxEntities):
+            if x not in entities:
+                entityCounter = x
+                return x
+        #return entityCounter
+    '''else:
+        print "Scanning for number", entityCounter, entities
+        if entityCounter not in entities:
             return entityCounter
         else:
             for x in range(0, maxEntities):
-                if x not in entities.keys():
+                if x not in entities:
                     return x
-            log.error("SandBox has reached the max number of entities. Increase entity limit.")
-
+            log.error("SandBox has reached the max number of entities. Increase entity limit.")'''
 
 
 #def addComponent(component):
@@ -59,7 +67,7 @@ def getNextID():
 
 def addComponent(entity, component):
     components[entity.id][component.__class__] = component
-    log.debug("Added component: " + str(component))
+    log.debug("Added component: " + str(component) + " to " + str(entity.id))
     messenger.send("addComponent", [entity, component])
 
 
@@ -75,22 +83,24 @@ def createEntity():
         entities.append(entity)
         components.append({})
     log.debug("Number of entities: " + str(len(entities)))"""
-    log.debug("Entity Request: Creating new entity")
     entity = Entity(getNextID())
     entities[entity.id] = entity
     components[entity.id] = {}
+    log.debug("Entity Request: Creating new entity with id: " + str(entity.id))
     log.debug("Number of entities: " + str(len(entities)))
     return entity
 
 
 def addEntity(entityId):
     """Manually adds an entity with a given id. Ideal for clients."""
-    if entityId in entities.keys():
+    print "Entty checker", entityId, entities
+    if entityId in entities:
         log.warning("Entity " + str(entityId) + " already exists!")
         return
     entity = Entity(entityId)
     entities[entity.id] = entity
     components[entity.id] = {}
+    log.debug("Manually generated entity " + str(entityId))
     return entity
 
 
@@ -187,7 +197,7 @@ class EntitySystem(DirectObject):
 
     def addComponent(self, entity, component):
         if component.__class__ in self.interested and entity not in self.entities:
-            log.debug("Adding component " + str(component) + " to entity " + str(entity))
+            log.debug(str(self) + " recognizes component " + str(component) + " for entity " + str(entity.id))
             self.entities[entity.id] = entity
 
     def run(self):

@@ -7,6 +7,10 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.ShowBase import ShowBase
 
 from main import *
+from errors import *
+
+import datetime
+import socket
 
 #from types import ClassType, TypeType
 
@@ -26,6 +30,7 @@ systems = {}
 counterReset = False
 maxEntities = 65534
 
+
 def getNextID():
     global entityCounter
     global counterReset
@@ -43,7 +48,6 @@ def getNextID():
                 if x not in entities.keys():
                     return x
             log.error("SandBox has reached the max number of entities. Increase entity limit.")
-
 
 
 #def addComponent(component):
@@ -108,6 +112,9 @@ def getSystem(systemType):
 def getComponent(entity, componentType=None):
     if hasComponent(entity, componentType):
         return components[entity.id][componentType]
+    else:
+        raise errors.NoComponent("No component type " + str(componentType)
+                + " in entity " + str(entity.id))
 
 
 def getComponents(componentType):
@@ -117,8 +124,24 @@ def getComponents(componentType):
             c.append(componentDict[componentType])
     return c
 
+
+def getEntitiesByComponentType(componentType):
+    '''Returns a list of entities that have a component. This will be
+    very expensive with large sets until the backend is moved to a
+    real database'''
+    entitiesList = []
+    for entityID in components:
+        if componentType in components[entityID]:
+            entitiesList.append(entities[entityID])
+    return entitiesList
+
+
 def hasComponent(entity, componentType):
     return componentType in components[entity.id]
+
+
+def send(message, params=[]):
+    base.messenger.send(message, params)
 
 
 class Entity(object):
@@ -187,6 +210,87 @@ class EntitySystem(DirectObject):
 
     def end(self):
         pass
+
+
+class UDPNetworkSystem(EntitySystem):
+    port = 0
+    serverAddress = ''  # This is for clients connecting to a server
+
+    def init(self, compress=False):
+        log.debug("Initiating Network System on port " + str(self.port))
+
+        self.udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udpSocket.bind(('', self.port))
+        self.udpSocket.setblocking(0)
+
+        self.lastAck = {}  # {NetAddress: time}
+        self.activeConnections = {}  # {NetAddress : PlayerComponent}
+
+        self.startPolling()
+        self.init2()
+
+    def init2(self):
+        """This function is overridden for initialization instead of __init__."""
+
+    def startPolling(self):
+        #taskMgr.add(self.tskReaderPolling, "serverListenTask", -40)
+        base.taskMgr.doMethodLater(10, self.activeCheck, "activeCheck")
+
+    def begin(self):
+        try:
+            data, addr = self.udpSocket.recvfrom(1024)
+        except:
+            return
+            #msgID, remotePacketCount, ack, acks, hashID, serialized = self.unpackPacket(data)
+        split = self.unpackPacket(data)
+        self.processPacket(split[0], split[1], split[2], split[3], split[4], split[5], addr)
+        self.lastAck[addr] = datetime.datetime.now()
+
+    def unpackPacket(self, datagram):
+        try:
+            split = datagram.split(',', 5)
+            return int(split[0]), int(split[1]), int(split[2]), int(split[3]), int(split[4]), split[5]
+        except:
+            raise errors.InvalidPacket(datagram)
+
+    def generateGenericPacket(self, key, packetCount=0):
+        datagram = str(key) + ',' + '0,0,0,0,'
+        return datagram
+
+    def processPacket(self, msgID, remotePacketCount, ack, acks, hashID, serialized):
+        """Override to process data"""
+        log.error(str(self) + " has no process function.")
+        raise NotImplementedError
+
+    def activeCheck(self, task):
+        """Checks for last ack from all known active connections.
+        playerDisconnected, address message fires if a player disconnects"""
+        for address, lastTime in self.lastAck.items():
+            if (datetime.datetime.now() - lastTime).seconds > 30:
+                #print self.activeConnections
+                self.activeConnections[address].address = ('', 0)
+                del self.activeConnections[address]
+                del self.lastAck[address]
+                send('playerDisconnected', [address])
+                #TODO: Disconnect
+        return task.again
+
+    def sendData(self, datagram, address):
+        if len(datagram) > 512:
+            raise Exception
+            log.error("Datagram too large: " + datagram)
+            return
+        self.udpSocket.sendto(datagram, address)
+
+
+def generateGenericPacket(key, packetCount=0):
+        datagram = str(key) + ',' + '0,0,0,0,'
+        return datagram
+
+
+def generatePacket(key, message, packetCount=0):
+        datagram = generateGenericPacket(key, packetCount=0) + message.SerializeToString()
+        return datagram
 
 
 class SystemManager(object):
