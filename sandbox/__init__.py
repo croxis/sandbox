@@ -288,8 +288,8 @@ class UDPNetworkSystem(EntitySystem):
 
     def sendData(self, datagram, address):
         if len(datagram) > 512:
-            raise Exception
             log.error("Datagram too large: " + datagram)
+            raise Exception
             return
         self.udpSocket.sendto(datagram, address)
 
