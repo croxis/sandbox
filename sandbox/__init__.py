@@ -93,9 +93,9 @@ def createEntity():
 
 def addEntity(entityId):
     """Manually adds an entity with a given id. Ideal for clients."""
-    print "Entty checker", entityId, entities
     if entityId in entities:
         log.warning("Entity " + str(entityId) + " already exists!")
+        log.warning("Entities: " + str(entities))
         return
     entity = Entity(entityId)
     entities[entity.id] = entity
@@ -288,7 +288,7 @@ class UDPNetworkSystem(EntitySystem):
 
     def sendData(self, datagram, address):
         if len(datagram) > 512:
-            log.error("Datagram too large: " + datagram)
+            log.error("Datagram too large (" + str(len(datagram)) + "): " + datagram)
             raise Exception
             return
         self.udpSocket.sendto(datagram, address)
