@@ -113,6 +113,10 @@ def removeEntity(entityId):
 
 
 def addSystem(system):
+    add_system(system)
+
+
+def add_system(system):
     systemManager.addSystem(system)
 
 
