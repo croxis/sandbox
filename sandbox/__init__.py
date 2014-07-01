@@ -11,7 +11,7 @@ from direct.showbase.ShowBase import ShowBase
 
 from .networking import UDPNetworkSystem
 from .systems import EntitySystem
-#from main import *
+# from main import *
 #from errors import *
 
 #from types import ClassType, TypeType
@@ -57,7 +57,7 @@ def getNextID():
             if x not in entities:
                 entityCounter = x
                 return x
-        #return entityCounter
+                #return entityCounter
     '''else:
         print "Scanning for number", entityCounter, entities
         if entityCounter not in entities:
@@ -69,19 +69,19 @@ def getNextID():
             log.error("SandBox has reached the max number of entities. Increase entity limit.")'''
 
 
-#def addComponent(component):
+#def add_component(component):
 #    if component.__class__ not in components.keys():
 #        components[component.__class__] = []
 #    components[component.__class__].append(component)
 
 
-def addComponent(entity, component):
+def add_component(entity, component):
     components[entity.id][component.__class__] = component
     log.debug("Added component: " + str(component) + " to " + str(entity.id))
-    messenger.send("addComponent", [entity, component])
+    messenger.send("add_component", [entity, component])
 
 
-def createEntity():
+def create_entity():
     """Returns next available entity"""
     entity = None
     """if removedAndAvailableEntities:
@@ -139,7 +139,7 @@ def getComponent(entity, componentType=None):
         return components[entity.id][componentType]
     else:
         raise errors.NoComponent("No component type " + str(componentType)
-                + " in entity " + str(entity.id))
+                                 + " in entity " + str(entity.id))
 
 
 def getComponents(componentType):
@@ -172,8 +172,9 @@ def send(message, params=[]):
 class Entity(object):
     def __init__(self, uniqueId):
         self.id = uniqueId
+
     #    self.components = {}
-    #def addComponent(self,component):
+    #def add_component(self,component):
     #    self.components[component.__class__] = component
 
     def removeComponent(self, componentClass):
@@ -184,9 +185,9 @@ class Entity(object):
         #self.typeBits = self.systemBits = 0
         pass
 
-    def addComponent(self, component):
+    def add_component(self, component):
         #if not isinstance(component, Component): raise TypeError
-        addComponent(self, component)
+        add_component(self, component)
 
     def getComponent(self, componentType):
         return getComponent(self, componentType)
@@ -197,9 +198,6 @@ class Entity(object):
 
 class Component(object):
     pass
-
-
-
 
 
 class SystemManager(object):
@@ -224,6 +222,7 @@ class SystemManager(object):
         for system in systems.values():
             system.run()
         return task.cont
+
 
 system_manager = SystemManager()
 

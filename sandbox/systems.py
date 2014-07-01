@@ -14,7 +14,7 @@ class EntitySystem(DirectObject):
             if t:
                 log.debug(str(self) + " interested in " + str(t))
                 self.interested.add(t)
-        self.accept("addComponent", self.add_component)
+        self.accept("add_component", self.add_component)
 
     def add_component(self, entity, component):
         if component.__class__ in self.interested and entity not in self.entities:
