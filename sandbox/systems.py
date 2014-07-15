@@ -1,12 +1,19 @@
-__author__ = 'croxis'
+# ## Python 3 look ahead imports ###
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from direct.directnotify.DirectNotify import DirectNotify
 from direct.showbase.DirectObject import DirectObject
 
-log = DirectNotify().newCategory("SandBox")
+__author__ = 'croxis'
+log = DirectNotify().newCategory("SandBox-Systems")
 
 
-class EntitySystem(DirectObject):
+class EntitySystem(object, DirectObject):
     def __init__(self, *types):
+        super(EntitySystem, self).__init__()
         self.entities = {}
         self.interested = set()
         self.enabled = True

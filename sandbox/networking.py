@@ -1,4 +1,4 @@
-### Python 3 look ahead imports ###
+# ## Python 3 look ahead imports ###
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -17,12 +17,32 @@ log = DirectNotify().newCategory("SandBox-Networking")
 
 
 class UDPNetworkSystem(EntitySystem):
-    def init(self, address='127.0.0.1', port=1999, compress=False):
+    def init(self, address='127.0.0.1', port=1999, upper_port=2014,
+             compress=False):
+        """
+
+        :param address:
+        :param port:
+        :param upper_port:
+        :param compress:
+        """
         log.debug("Initiating Network System on port " + str(port))
 
-        self.udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.udpSocket.bind((address, port))
-        self.udpSocket.setblocking(0)
+        self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        connected = False
+        while not connected:
+            try:
+                self.udp_socket.bind((address, port))
+                connected = True
+                log.info("Socket bound to: " + str((address, port)))
+                print("Socket bound to: " + str((address, port)))
+            except socket.error:
+                port += 1
+                if port is upper_port:
+                    log.warning("No sockets open in range.")
+                    return
+
+        self.udp_socket.setblocking(0)
 
         self.lastAck = {}  # {NetAddress: time}
         self.activeConnections = {}  # {NetAddress : PlayerComponent}
@@ -39,15 +59,17 @@ class UDPNetworkSystem(EntitySystem):
 
     def begin(self):
         try:
-            data, addr = self.udpSocket.recvfrom(1024)
+            data, addr = self.udp_socket.recvfrom(1024)
         except:
             return
             #msgID, remotePacketCount, ack, acks, hashID, serialized = self.unpack_packet(data)
         split = unpack_packet(data)
-        self.process_packet(split[0], split[1], split[2], split[3], split[4], split[5], addr)
+        self.process_packet(split[0], split[1], split[2], split[3], split[4],
+                            split[5], addr)
         self.lastAck[addr] = datetime.datetime.now()
 
-    def process_packet(self, msgID, remotePacketCount, ack, acks, hashID, serialized):
+    def process_packet(self, msgID, remotePacketCount, ack, acks, hashID,
+                       serialized):
         """Override to process data"""
         log.error(u"{0} has no process function.".format(unicode(self)))
         raise NotImplementedError
@@ -68,25 +90,28 @@ class UDPNetworkSystem(EntitySystem):
 
     def send_data(self, datagram, address):
         if len(datagram) > 512:
-            log.error("Datagram too large (" + str(len(datagram)) + "): " + datagram)
+            log.error(
+                "Datagram too large (" + str(len(datagram)) + "): " + datagram)
             raise Exception
             return
-        self.udpSocket.sendto(datagram, address)
+        self.udp_socket.sendto(datagram, address)
 
 
 def unpack_packet(datagram):
-        try:
-            split = datagram.split(',', 5)
-            return int(split[0]), int(split[1]), int(split[2]), int(split[3]), int(split[4]), split[5]
-        except:
-            raise errors.InvalidPacket(datagram)
+    try:
+        split = datagram.split(',', 5)
+        return int(split[0]), int(split[1]), int(split[2]), int(split[3]), int(
+            split[4]), split[5]
+    except:
+        raise errors.InvalidPacket(datagram)
 
 
 def generate_generic_packet(key, packetCount=0):
-        datagram = str(key) + ',' + '0,0,0,0,'
-        return datagram
+    datagram = str(key) + ',' + '0,0,0,0,'
+    return datagram
 
 
 def generate_packet(key, message, packetCount=0):
-        datagram = generate_generic_packet(key, packetCount=0) + message.to_bytes_packed()
-        return datagram
+    datagram = generate_generic_packet(key,
+                                       packetCount=0) + message.to_bytes_packed()
+    return datagram

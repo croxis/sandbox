@@ -20,7 +20,7 @@ log = DirectNotify().newCategory("SandBox")
 base = None
 
 #TODO: Add locking mechanisms
-#TODO: Add persistance mechanisms
+#TODO: Add persistence mechanisms
 #components = {} #{__Class__: []}
 #entities = []
 #components = [] #components[entityid]{componentType: component}
@@ -127,10 +127,10 @@ def addSystem(system):
 
 
 def add_system(system):
-    system_manager.addSystem(system)
+    system_manager.add_system(system)
 
 
-def getSystem(systemType):
+def get_system(systemType):
     return system_manager.getSystem(systemType)
 
 
@@ -205,7 +205,7 @@ class SystemManager(object):
         pass
         #taskMgr.add(self.update, "systemManager")
 
-    def addSystem(self, system):
+    def add_system(self, system):
         if not isinstance(system, EntitySystem):
             raise TypeError
         log.debug("Adding system " + str(system))
