@@ -12,7 +12,7 @@ from direct.showbase.ShowBase import ShowBase
 from .networking import UDPNetworkSystem
 from .systems import EntitySystem
 # from main import *
-#from errors import *
+from .errors import *
 
 #from types import ClassType, TypeType
 
@@ -78,7 +78,7 @@ def getNextID():
 def add_component(entity, component):
     components[entity.id][component.__class__] = component
     log.debug("Added component: " + str(component) + " to " + str(entity.id))
-    messenger.send("add_component", [entity, component])
+    base.messenger.send("add_component", [entity, component])
 
 
 def create_entity():
@@ -122,6 +122,20 @@ def removeEntity(entityId):
     del components[entityId]
 
 
+def get_entity(component):
+    """
+    Returns the entity of the component.
+
+    :rtype : Entity
+    :param component:
+    """
+    for entity_id in components:
+        for component_class in components[entity_id]:
+            if component is components[entity_id][component_class]:
+                return entities[entity_id]
+    raise NoEntity("No entity found for component: " + str(component))
+
+
 def addSystem(system):
     add_system(system)
 
@@ -138,11 +152,11 @@ def getComponent(entity, componentType=None):
     if hasComponent(entity, componentType):
         return components[entity.id][componentType]
     else:
-        raise errors.NoComponent("No component type " + str(componentType)
+        raise NoComponent("No component type " + str(componentType)
                                  + " in entity " + str(entity.id))
 
 
-def getComponents(componentType):
+def get_components(componentType):
     c = []
     for componentDict in components.values():
         if componentType in componentDict:
@@ -150,13 +164,16 @@ def getComponents(componentType):
     return c
 
 
-def getEntitiesByComponentType(componentType):
-    '''Returns a list of entities that have a component. This will be
+def get_entities_by_component_type(component_type):
+    """Returns a list of entities that have a component. This will be
     very expensive with large sets until the backend is moved to a
-    real database'''
+    real database.
+
+    :rtype : list
+    :param component_type: """
     entitiesList = []
     for entityID in components:
-        if componentType in components[entityID]:
+        if component_type in components[entityID]:
             entitiesList.append(entities[entityID])
     return entitiesList
 
