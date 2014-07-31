@@ -206,8 +206,8 @@ class Entity(object):
         #if not isinstance(component, Component): raise TypeError
         add_component(self, component)
 
-    def getComponent(self, componentType):
-        return getComponent(self, componentType)
+    def get_component(self, component_type):
+        return getComponent(self, component_type)
 
     def hasComponent(self, componentType):
         return hasComponent(self, componentType)
