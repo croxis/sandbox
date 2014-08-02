@@ -11,8 +11,8 @@ from direct.showbase.ShowBase import ShowBase
 
 from .networking import UDPNetworkSystem
 from .systems import EntitySystem
-# from main import *
 from .errors import *
+from .import appdirs
 
 #from types import ClassType, TypeType
 
@@ -149,7 +149,7 @@ def get_system(systemType):
 
 
 def getComponent(entity, componentType=None):
-    if hasComponent(entity, componentType):
+    if has_component(entity, componentType):
         return components[entity.id][componentType]
     else:
         raise NoComponent("No component type " + str(componentType)
@@ -178,8 +178,8 @@ def get_entities_by_component_type(component_type):
     return entitiesList
 
 
-def hasComponent(entity, componentType):
-    return componentType in components[entity.id]
+def has_component(entity, component_type):
+    return component_type in components[entity.id]
 
 
 def send(message, params=[]):
@@ -209,8 +209,8 @@ class Entity(object):
     def get_component(self, component_type):
         return getComponent(self, component_type)
 
-    def hasComponent(self, componentType):
-        return hasComponent(self, componentType)
+    def has_component(self, component_type):
+        return has_component(self, component_type)
 
 
 class Component(object):
