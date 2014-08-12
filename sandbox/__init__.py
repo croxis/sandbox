@@ -35,9 +35,14 @@ maxEntities = 65534
 
 def init(log_level='info'):
     global base
-    loadPrcFileData("", "notify-level-SandBox " + log_level)
     base = ShowBase()
     base.setSleep(0.001)
+    if log_level == 'debug':
+        log.setSeverity(2)
+    if log_level == 'info':
+        log.setSeverity(3)
+    if log_level == 'warning':
+        log.setSeverity(4)
     taskMgr.add(system_manager.update, "systemManager")
 
 
