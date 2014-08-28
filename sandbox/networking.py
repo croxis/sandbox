@@ -69,7 +69,7 @@ class UDPNetworkSystem(EntitySystem):
         self.lastAck[addr] = datetime.datetime.now()
 
     def process_packet(self, msgID, remotePacketCount, ack, acks, hashID,
-                       serialized):
+                       serialized, address):
         """Override to process data"""
         log.error(u"{0} has no process function.".format(unicode(self)))
         raise NotImplementedError
