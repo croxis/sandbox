@@ -40,12 +40,14 @@ class EntitySystem(object, DirectObject):
         """This function is overridden for initialization instead of __init__."""
 
     def begin(self):
+        """Called once each frame before any components are manipulated."""
         pass
 
     def process(self, entity):
-        """This is overridden"""
+        """This is overridden."""
         log.error(str(self) + " has no process function.")
         raise NotImplementedError
 
     def end(self):
+        """Called ocne each frame after all entities have been processed."""
         pass
