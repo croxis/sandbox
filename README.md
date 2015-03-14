@@ -1,4 +1,7 @@
-Sandbox. An entity component system for panda3d + additional bloat!
+Sandbox
+=======
+
+An entity component system for panda3d + additional bloat!
 
 Sandbox tucks away some of the initial panda3d setup boiler code.
 
