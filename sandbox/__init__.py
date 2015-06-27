@@ -18,6 +18,7 @@ from .import appdirs
 
 log = DirectNotify().newCategory("SandBox")
 base = None
+render_pipeline = None
 
 #TODO: Add locking mechanisms
 #TODO: Add persistence mechanisms
