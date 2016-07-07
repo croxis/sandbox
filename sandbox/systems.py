@@ -11,7 +11,7 @@ __author__ = 'croxis'
 log = DirectNotify().newCategory("SandBox-Systems")
 
 
-class EntitySystem(object, DirectObject):
+class EntitySystem(DirectObject):
     def __init__(self, *types):
         super(EntitySystem, self).__init__()
         self.entities = {}
@@ -31,7 +31,6 @@ class EntitySystem(object, DirectObject):
     def run(self):
         if self.enabled:
             self.begin()
-            #self.processEntities(self.entities)
             for e in self.entities.values():
                 self.process(e)
             self.end()

@@ -10,7 +10,7 @@ Sandbox tucks away some of the initial panda3d setup boiler code.
 Sandbox can be installed via pip:
 
 ```
-pip2 install git+https://github.com/croxis/sandbox.git
+pip install git+https://github.com/croxis/sandbox.git
 ```
 
 # Quick Start
